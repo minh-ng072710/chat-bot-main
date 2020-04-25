@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import bluebird from "bluebird";
-
-let connectDB = () => {
+require("dotenv").config();
+let connectDB = async () => {
     mongoose.bluebird = bluebird;
-    let URI = `mongodb+srv://giaminh:CkhLInJdpddOLEHD@cluster0-zjg82.gcp.mongodb.net/CHAT_BOT?retryWrites=true&w=majority`;
-    return mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, (err) => {
-        if (err) {
-            console.log("Have errors happen while connect to MongoDB")
-        }
-        console.log("Connet to MongoDB succeed")
-    });
+    var mongoDB = process.env.MONGO_HOST + process.env.MONGO_PORT + process.env.MONGO_DB_NAME
+    // console.log(mongoDB)
+    // var mongoDB = 'mongodb://10.9.53.3:27017/Sale';
+    mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+    //Ép Mongoose sử dụng thư viện promise toàn cục
+    mongoose.Promise = global.Promise;
+    //Lấy kết nối mặc định
+    return mongoose.connection;
 };
 
-module.exports = connectDB;
+module.exports = { connectDB: connectDB };
