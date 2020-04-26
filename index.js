@@ -30,7 +30,7 @@ configEngine(app);
 //config dotenv for project
 require("dotenv").config({});
 
-
+// app.listen(process.env.PORT || 3000)
 app.listen(process.env.APP_PORT, process.env.APP_HOSTNAME, () => {
     console.log(`BOT SERVER IS RUNNING AT: ${process.env.APP_HOSTNAME}:${process.env.APP_PORT} `);
 });

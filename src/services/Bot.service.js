@@ -12,7 +12,6 @@ let Get_Product_By_Name = async () => {
     }
 
 }
-
 let Find_Product_By_Name = async (item) => {
     let List_ID_Product = [];
     let List_Size = [];
@@ -20,15 +19,15 @@ let Find_Product_By_Name = async (item) => {
 
     let alldata;
     let Result_Final;
-    await item.Product.forEach((item1 => {
-        List_ID_Product.push(item1.Id_Product.toString())
+    await item.orderlines.forEach((item1 => {
+        List_ID_Product.push(item1.product_id)
     }))
-    await item.Product.forEach((item2 => {
-        List_Size.push(item2.Size)
+    await item.orderlines.forEach((item2 => {
+        List_Size.push(item2.product_id)
     }))
-    await item.Product.forEach((item3 => {
-        List_Quantity.push(item3.Size.Product_Quantity)
-    }))
+    // await item.Product.forEach((item3 => {
+    //     List_Quantity.push(item3.Size.Product_Quantity)
+    // }))
     alldata = await Bot_Model.Find_Infor_Order(List_ID_Product)
 
     Result_Final = await Bot_Model.check(alldata, item, List_ID_Product, List_Size, List_Quantity)

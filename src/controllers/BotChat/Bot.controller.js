@@ -19,27 +19,36 @@ let Get_ALL_Order = async (req, res) => {
 let Create_Order = async (req, res) => {
     alldata = "";
     let Obj_Product = []
-    req.body.Product.forEach(element => {
+    req.body.orderlines.forEach(element => {
         Obj_Product.push({
-            Id_Product: element.Id_Product,
-            Product_Quantity: element.Product_Quantity,
-            Size: element.Size,
+            product_id: element.product_id,
+            quantity: element.quantity,
+            note: element.note,
         })
     });
-    // console.log(bebore);
     var new_order = new Order_Infor({
-        PSID: req.body.PSID,
-        Custumer_Name: req.body.Custumer_Name,
-        Phone: req.body.Phone,
-        Address_Deli: req.body.Address_Deli,
-        Product: Obj_Product,
-        Note: req.body.Note,
-        Payments: req.body.Payments,
-        Code_Coupon: req.body.Code_Coupon
+        psid: req.body.psid,
+        custumer: {
+            name: req.body.custumer.name,
+            phone: req.body.custumer.phone
+        },
+        scheduleTime: null,
+        delivery_address: {
+            name: req.body.delivery_address.name,
+            phone: req.body.delivery_address.phone,
+            street: req.body.delivery_address.street,
+            lat: req.body.delivery_address.lat,
+            lng: req.body.delivery_address.lng
+        },
+        orderlines: Obj_Product,
+        note: req.body.note,
+        payments: req.body.payments,
+        coupon: req.body.coupon,
+        access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXBpLnRoZWNvZmZlZWhvdXNlLmNvbS9hcGkvdmVyaWZ5X21vYmlsZSIsImlhdCI6MTU4NzgyNjY3NiwiZXhwIjoxNTkwNDE4Njc2LCJuYmYiOjE1ODc4MjY2NzYsImp0aSI6Im5OMU0xMzBROEVrdURVT0siLCJzdWIiOjQ2MzgxNSwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.9Jxp-yQ0-PUM6GZrOeLLQ-byMCZJnahIbpbe7dAji5g"
     });
+    // console.log("new_order: " + JSON.stringify(new_order))
     alldata = await All_Product.Find_Product_By_Name(new_order)
     res.send(alldata)
-
     // res.redirect('http://localhost:3000/chat-bot');
 
     // await List_Order_Infor.push(new_order)
@@ -56,10 +65,8 @@ let Create_Order = async (req, res) => {
 
 }
 let Get_Main_Data = (req, res) => {
-
     res.send(alldata)
 }
-
 module.exports = {
     Layout_BOT: Layout_BOT,
     Test_DB_Mongo: Test_DB,
